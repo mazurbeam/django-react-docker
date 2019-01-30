@@ -1,9 +1,9 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { SheetsRegistry } from 'react-jss/lib/jss';
+// import { SheetsRegistry } from 'react-jss/lib/jss';
 import { StaticRouter } from 'react-router';
 import { ThemeProvider } from 'styled-components';
-import { ServerStyleSheet } from 'styled-components';
+import { ServerStyleSheet, StyleSheetManager } from 'styled-components';
 import { Helmet } from 'react-helmet';
 import configureStore from '../common/store/configureStore';
 import { renderToString } from 'react-dom/server';
@@ -32,27 +32,29 @@ export function handleRender(req, res) {
   // Grab the initial state from our Redux store
   const finalState = store.getState();
   // Create a sheetsRegistry instance.
-  const sheetsRegistry = new ServerStyleSheet();
-
+  const sheet = new ServerStyleSheet();
+  // const markup = renderToString(sheet.collectStyles(<App />));
   // Render the component to a string.
   const html = renderToString(
-    <ThemeProvider theme={theme}>
-      <Provider store={store}>
-        <StaticRouter location={req.url} context={context}>
-          <App />
-        </StaticRouter>
-      </Provider>
-    </ThemeProvider>
+    sheet.collectStyles(
+      <ThemeProvider theme={theme}>
+        <Provider store={store}>
+          <StaticRouter location={req.url} context={context}>
+            <App />
+          </StaticRouter>
+        </Provider>
+      </ThemeProvider>
+    )
   );
 
   // Grab the CSS from our sheetsRegistry.
-  const css = sheetsRegistry.getStyleTags();
+  const styleTags = sheet.getStyleTags();
 
   // Send the rendered page back to the client.
-  res.send(renderFullPage(html, css, helmet, finalState));
+  res.send(renderFullPage(html, styleTags, helmet, finalState));
 }
 
-function renderFullPage(markup, css, helmet, finalState) {
+function renderFullPage(markup, styleTags, helmet, finalState) {
   return `<!doctype html>
     <html lang="en" ${helmet.htmlAttributes.toString()}>
     <head>
@@ -73,10 +75,11 @@ function renderFullPage(markup, css, helmet, finalState) {
           ? `<script src="${assets.client.js}" defer></script>`
           : `<script src="${assets.client.js}" defer crossorigin></script>`
       }
+      ${styleTags}
     </head>
     <body ${helmet.bodyAttributes.toString()}>
       <div id="root">${markup}</div>
-      <style id="jss-server-side">${css}</style>
+      
       <script>
         window.__PRELOADED_STATE__ = ${serialize(finalState)}
       </script>

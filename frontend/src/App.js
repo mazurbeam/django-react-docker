@@ -4,14 +4,16 @@ import { Box } from 'rebass';
 // import Switch from 'react-router-dom/Switch';
 import NavigationRoutes from './common/routes';
 import { GlobalStyle } from './common/theme';
+import { Normalize } from '@smooth-ui/core-sc';
 // import Home from './Home';
 // import './App.css';
 
 const App = () => (
-  <Box height={1}>
+  <div>
     <GlobalStyle />
+    <Normalize />
     <NavigationRoutes />
-  </Box>
+  </div>
 );
 
 export default App;

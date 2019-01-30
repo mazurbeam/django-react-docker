@@ -1,4 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
+import { theme } from '@smooth-ui/core-sc';
 
 export const GlobalStyle = createGlobalStyle`
 @font-face: 
@@ -12,6 +13,8 @@ html {
 `;
 
 export default {
+  ...theme,
+
   breakpoints: ['40em', '52em', '64em'],
   fontSizes: [12, 14, 16, 20, 24, 32, 48, 64],
   colors: {
