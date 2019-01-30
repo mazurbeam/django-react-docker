@@ -1,0 +1,79 @@
+version: '3.7'
+
+services:
+  traefik:
+        image: traefik # The official Traefik docker image
+        command: --api --docker # Enables the web UI and tells Traefik to listen to docker
+        ports:
+            - "80:80"     # The HTTP port
+            - "443:443"     # The HTTPS port
+            # - "8000:8000" # The Web UI (enabled by --api)
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+            # - ./traefik/${TRAEFIK_CONFIG:-traefik_dev.toml}:/traefik.toml
+            # - ./traefik/acme.json:/acme.json
+        networks:
+            - master
+  db:
+    image: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    networks:
+      - master
+  api:
+    build: ./api
+    command: bash -c "python manage.py makemigrations && python manage.py migrate  && python manage.py runserver 0.0.0.0:8000 "
+    volumes:
+      - ./api:/app/api
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    networks:
+      - master
+    labels:
+      - "traefik.backend=api"
+      - "traefik.docker.network=${network_name:-masternetwork}"
+      - "traefik.frontend.rule=Host:api.${BASE_URL:-localhost}" # add another rule with ";Host:host"
+      - "traefik.enable=true"
+      - "traefik.port=8000"
+  
+  frontend:
+    build:
+            context: ./frontend
+            args:
+                - ENV=${ENV:-development}
+                - BASE_URL=${BASE_URL:-localhost}
+    command: ["npm", "start"]
+    volumes:
+      - ./frontend:/app/frontend
+      - node-modules:/app/frontend/node_modules
+    ports:
+      - "3000:3000"
+      - "3001:3001"
+    environment:
+            # Needed for haproxy in swarm
+            - SERVICE_PORTS=80
+    networks:
+      - master
+    labels:
+      - "traefik.backend=ui"
+      - "traefik.docker.network=${network_name:-masternetwork}"
+      - "traefik.frontend.rule=Host:${BASE_URL:-localhost}" # add another rule with ";Host:host"
+      - "traefik.enable=true"
+      - "traefik.port=80"
+
+networks:
+  # Network mostly needed for swarm
+  # Set to bridge to test locally and have ports be outside accessible
+  master:
+    driver: overlay
+    name: "${network_name:-masternetwork}"
+
+volumes:
+  node-modules:
+  postgres_data:
+
