@@ -63,7 +63,6 @@ export function isAccessTokenExpired(state) {
 }
 export function isRefreshTokenExpired(state) {
   if (state.refresh && state.refresh.exp) {
-    // console.log(1000 * state.refresh.exp - new Date().getTime() < 5000);
     return 1000 * state.refresh.exp - new Date().getTime() < 5000;
   }
   return true;
