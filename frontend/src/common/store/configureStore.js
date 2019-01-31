@@ -1,9 +1,6 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 
-import { routerMiddleware } from 'connected-react-router';
-import { createBrowserHistory, createMemoryHistory } from 'history';
-
 import rootReducer from './reducers';
 import apiMiddleware from './middleware';
 // A nice helper to tell us if we're on the server
@@ -15,11 +12,11 @@ export const isServer = !(
 
 export default (url = '/') => {
   // Create a history depending on the environment
-  const history = isServer
-    ? createMemoryHistory({
-        initialEntries: [url]
-      })
-    : createBrowserHistory();
+  // const history = isServer
+  //   ? createMemoryHistory({
+  //       initialEntries: [url]
+  //     })
+  //   : createBrowserHistory();
 
   const enhancers = [];
 
@@ -32,7 +29,7 @@ export default (url = '/') => {
     }
   }
 
-  const middleware = [apiMiddleware, thunk, routerMiddleware(history)];
+  const middleware = [apiMiddleware, thunk];
   const composedEnhancers = compose(
     applyMiddleware(...middleware),
     ...enhancers
@@ -47,20 +44,15 @@ export default (url = '/') => {
   }
 
   // Create the store
-  const store = createStore(
-    rootReducer(history),
-    initialState,
-    composedEnhancers
-  );
+  const store = createStore(rootReducer, initialState, composedEnhancers);
   if (module.hot) {
     // Enable Webpack hot module replacement for reducers
     module.hot.accept('./reducers', () => {
       const nextRootReducer = require('./reducers').default;
-      store.replaceReducer(nextRootReducer(history));
+      store.replaceReducer(nextRootReducer);
     });
   }
   return {
-    store,
-    history
+    store
   };
 };

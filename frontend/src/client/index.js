@@ -8,7 +8,7 @@ import React from 'react';
 import { hydrate } from 'react-dom';
 import theme from '../common/theme';
 
-const { store, history } = configureStore();
+const { store } = configureStore();
 
 const Application = (
   <ThemeProvider theme={theme}>

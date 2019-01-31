@@ -7,7 +7,7 @@ class Home extends React.Component {
     return (
       <div className="Home">
         <Toolbar />
-        <p>Text</p>
+        <p>Tet</p>
       </div>
     );
   }
