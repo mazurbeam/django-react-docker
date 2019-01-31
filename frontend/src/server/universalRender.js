@@ -9,7 +9,6 @@ import configureStore from '../common/store/configureStore';
 import { renderToString } from 'react-dom/server';
 import serialize from 'serialize-javascript';
 import App from '../App';
-import { Frontload, frontloadServerRender } from 'react-frontload';
 
 import theme from '../common/theme';
 
