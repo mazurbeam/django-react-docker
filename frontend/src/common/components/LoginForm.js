@@ -7,16 +7,9 @@ import {
   Alert,
   ControlFeedback
 } from '@smooth-ui/core-sc';
-import styled from 'styled-components';
-import { Heading, Box, Card } from 'rebass';
+import { Heading } from 'rebass';
+import { Centered } from './base';
 
-const Centered = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-right: -50%;
-  transform: translate(-50%, -50%);
-`;
 class LoginForm extends Component {
   state = {
     username: '',

@@ -26,7 +26,7 @@ export function handleRender(req, res) {
   const preloadedState = { counter, auth };
 
   // Create a new Redux store instance
-  const { store, history } = configureStore();
+  const { store } = configureStore(req.url);
   const helmet = Helmet.renderStatic();
 
   // Grab the initial state from our Redux store
@@ -40,7 +40,7 @@ export function handleRender(req, res) {
       <ThemeProvider theme={theme}>
         <Provider store={store}>
           <StaticRouter location={req.url} context={context}>
-            <App history={history} />
+            <App />
           </StaticRouter>
         </Provider>
       </ThemeProvider>
