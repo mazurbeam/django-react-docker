@@ -9,6 +9,7 @@ import configureStore from '../common/store/configureStore';
 import { renderToString } from 'react-dom/server';
 import serialize from 'serialize-javascript';
 import App from '../App';
+import { Frontload, frontloadServerRender } from 'react-frontload';
 
 import theme from '../common/theme';
 
@@ -35,15 +36,17 @@ export function handleRender(req, res) {
   const sheet = new ServerStyleSheet();
   // const markup = renderToString(sheet.collectStyles(<App />));
   // Render the component to a string.
-  const html = renderToString(
-    sheet.collectStyles(
-      <ThemeProvider theme={theme}>
-        <Provider store={store}>
-          <StaticRouter location={req.url} context={context}>
-            <App history={history} />
-          </StaticRouter>
-        </Provider>
-      </ThemeProvider>
+  const html = frontloadServerRender(() =>
+    renderToString(
+      sheet.collectStyles(
+        <ThemeProvider theme={theme}>
+          <Provider store={store}>
+            <StaticRouter location={req.url} context={context}>
+              <App history={history} />
+            </StaticRouter>
+          </Provider>
+        </ThemeProvider>
+      )
     )
   );
 

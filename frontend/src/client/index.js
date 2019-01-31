@@ -3,6 +3,7 @@ import BrowserRouter from 'react-router-dom/BrowserRouter';
 import { Provider } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
 import { ConnectedRouter } from 'connected-react-router';
+import { Frontload } from 'react-frontload';
 
 import configureStore from '../common/store/configureStore';
 import React from 'react';
@@ -14,9 +15,9 @@ const { store, history } = configureStore();
 hydrate(
   <ThemeProvider theme={theme}>
     <Provider store={store}>
-      <BrowserRouter>
+      <ConnectedRouter history={history}>
         <App />
-      </BrowserRouter>
+      </ConnectedRouter>
     </Provider>
   </ThemeProvider>,
   document.getElementById('root')
@@ -27,9 +28,9 @@ if (module.hot) {
     hydrate(
       <ThemeProvider theme={theme}>
         <Provider store={store}>
-          <BrowserRouter>
+          <ConnectedRouter history={history}>
             <App />
-          </BrowserRouter>
+          </ConnectedRouter>
         </Provider>
       </ThemeProvider>,
       document.getElementById('root')

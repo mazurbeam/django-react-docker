@@ -48,7 +48,7 @@ export default (url = '/') => {
 
   // Create the store
   const store = createStore(
-    connectRouter(history)(rootReducer),
+    rootReducer(history),
     initialState,
     composedEnhancers
   );

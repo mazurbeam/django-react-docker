@@ -6592,6 +6592,12 @@ react-focus-lock@^1.17.6:
     prop-types "^15.6.2"
     react-clientside-effect "^1.2.0"
 
+react-frontload@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/react-frontload/-/react-frontload-1.0.3.tgz#8a89f0ffd011e4dc9d4586d78620e046caedd43a"
+  dependencies:
+    prop-types "^15.6.2"
+
 react-helmet@^5.2.0:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/react-helmet/-/react-helmet-5.2.0.tgz#a81811df21313a6d55c5f058c4aeba5d6f3d97a7"
