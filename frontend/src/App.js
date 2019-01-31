@@ -1,5 +1,6 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Box } from 'rebass';
+
 // import Route from 'react-router-dom/Route';
 // import Switch from 'react-router-dom/Switch';
 import NavigationRoutes from './common/routes';
@@ -9,11 +10,11 @@ import { Normalize } from '@smooth-ui/core-sc';
 // import './App.css';
 
 const App = () => (
-  <div>
+  <Box bg="bg">
     <GlobalStyle />
     <Normalize />
     <NavigationRoutes />
-  </div>
+  </Box>
 );
 
 export default App;

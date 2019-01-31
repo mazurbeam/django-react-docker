@@ -1,31 +1,60 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
+
+import { connectRouter, routerMiddleware } from 'connected-react-router';
+import { createBrowserHistory, createMemoryHistory } from 'history';
+
 import rootReducer from './reducers';
 import apiMiddleware from './middleware';
+// A nice helper to tell us if we're on the server
+export const isServer = !(
+  typeof window !== 'undefined' &&
+  window.document &&
+  window.document.createElement
+);
 
-const middleware = [apiMiddleware, thunk];
+export default (url = '/') => {
+  // Create a history depending on the environment
+  const history = isServer
+    ? createMemoryHistory({
+        initialEntries: [url]
+      })
+    : createBrowserHistory();
 
-const composeEnhancers =
-  (typeof window !== 'undefined' &&
-    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) ||
-  compose;
+  const enhancers = [];
 
-const configureStore = preloadedState => {
-  const store = createStore(
-    rootReducer,
-    preloadedState,
-    composeEnhancers(applyMiddleware(...middleware))
-  );
+  // Dev tools are helpful
+  if (process.env.NODE_ENV === 'development' && !isServer) {
+    const devToolsExtension = window.devToolsExtension;
 
-  if (module.hot) {
-    // Enable Webpack hot module replacement for reducers
-    module.hot.accept('./reducers', () => {
-      const nextRootReducer = require('./reducers').default;
-      store.replaceReducer(nextRootReducer);
-    });
+    if (typeof devToolsExtension === 'function') {
+      enhancers.push(devToolsExtension());
+    }
   }
 
-  return store;
-};
+  const middleware = [apiMiddleware, thunk, routerMiddleware(history)];
+  const composedEnhancers = compose(
+    applyMiddleware(...middleware),
+    ...enhancers
+  );
 
-export default configureStore;
+  // Do we have preloaded state available? Great, save it.
+  const initialState = !isServer ? window.__PRELOADED_STATE__ : {};
+
+  // Delete it once we have it stored in a variable
+  if (!isServer) {
+    delete window.__PRELOADED_STATE__;
+  }
+
+  // Create the store
+  const store = createStore(
+    connectRouter(history)(rootReducer),
+    initialState,
+    composedEnhancers
+  );
+
+  return {
+    store,
+    history
+  };
+};

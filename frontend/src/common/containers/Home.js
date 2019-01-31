@@ -16,7 +16,7 @@ class Home extends React.Component {
         </p>
         <ul className="Home-resources">
           <li>
-            <a href="https://github.com/jaredpalmer/razzle">Docs</a>
+            <a href="https://github.com/jaredpalmer/razzle">Do</a>
           </li>
           <li>
             <a href="https://github.com/jaredpalmer/razzle/issues">Issues</a>
