@@ -20,6 +20,16 @@ To run outside of docker:
 - add a `local.py` file to `/api/config/settings/` with the SECRET_KEY variable
 - `export DJANGO_DEVELOPMENT=1` locally when running django locally to automatically use the dev.py settings.
 
+### Email
+Add this to your local.py
+```
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = "email@gmail.com"
+EMAIL_HOST_PASSWORD = "password"
+```
 
 ### Frontend
 

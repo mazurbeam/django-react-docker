@@ -25,5 +25,7 @@ urlpatterns = [
     path('auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('auth/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('auth/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
-    path('v1/', include('api.urls'))
+    path('v1/', include('api.urls')),
+    path('invitations/', include('invitations.urls', namespace='invitations')),
+
 ]

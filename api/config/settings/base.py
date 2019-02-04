@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'rest_auth.registration',
     'corsheaders',
     'api',
+    'invitations'
 ]
 
 MIDDLEWARE = [
@@ -155,3 +156,7 @@ CORS_ORIGIN_WHITELIST = (
     'localhost:3000',
     'localhost:3001'
 )
+
+# Django Invitations Settings
+ACCOUNT_ADAPTER = 'invitations.models.InvitationsAdapter'
+INVITATIONS_SIGNUP_REDIRECT = 'account_signup'
