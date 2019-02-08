@@ -5,6 +5,8 @@ import configureStore from '../common/store/configureStore';
 import express from 'express';
 import { fetchCounter } from '../common/api/counter';
 import qs from 'qs';
+import { match, RouterContext, StaticRouter } from 'react-router';
+
 import { renderToString } from 'react-dom/server';
 import serialize from 'serialize-javascript';
 // Import the StyledComponents SSR util
@@ -31,6 +33,7 @@ server
 
       // Create a new Redux store instance
       const store = configureStore(preloadedState);
+      const context = {}
 
       // Create the server side style sheet
       const sheet = new ServerStyleSheet();
@@ -38,7 +41,9 @@ server
       const markup = renderToString(sheet.collectStyles(
         <ThemeProvider theme={theme}>
         <Provider store={store}>
+        <StaticRouter location={req.url} context={context}>
           <App />
+          </StaticRouter>
         </Provider>
         </ThemeProvider>
       ));
@@ -74,4 +79,5 @@ server
     });
   });
 
+  
 export default server;

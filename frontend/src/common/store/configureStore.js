@@ -1,13 +1,36 @@
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import rootReducer from './reducers';
 
+// A nice helper to tell us if we're on the server
+export const isServer = !(
+  typeof window !== 'undefined' &&
+  window.document &&
+  window.document.createElement
+);
+
 const configureStore = preloadedState => {
+  const enhancers = [];
+  const middleware = [thunk];
+  // Dev tools are helpful
+  if (process.env.NODE_ENV === 'development' && !isServer) {
+    const devToolsExtension = window.devToolsExtension;
+
+    if (typeof devToolsExtension === 'function') {
+      enhancers.push(devToolsExtension());
+    }
+  }
+  const composedEnhancers = compose(
+    applyMiddleware(...middleware),
+    ...enhancers
+  );
+  
   const store = createStore(
     rootReducer,
     preloadedState,
-    applyMiddleware(thunk)
+    composedEnhancers
   );
+  
 
   if (module.hot) {
     // Enable Webpack hot module replacement for reducers
