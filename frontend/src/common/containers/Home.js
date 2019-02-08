@@ -1,30 +1,17 @@
-import React from 'react';
-// import { css } from 'styled-components';
-import styled from 'styled-components';
+import React, { Fragment } from 'react';
 
 import { connect } from 'react-redux';
-import { Flex, Box } from 'rebass';
 import { authOperations, authSelectors } from '../store/auth';
 
-const Container = styled(Box)({
-  minHeight: '100vh'
-});
+import Home from '../pages/Home';
+import Header from './Header';
 
-Container.defaultProps = {
-  mx: 'auto'
-};
-
-const Home = props => {
+const HomeContainer = props => {
   return (
-    <Flex
-      flexDirection="column"
-      // justifyContent="center"
-      // alignItems="center"
-      flexWrap="wrap"
-      // css={{ maxWidth: '1024px' }}
-    >
-      <Container p={6}>Home Edit Test</Container>
-    </Flex>
+    <Fragment>
+      <Header {...props} bg="blue" />
+      <Home {...props} />
+    </Fragment>
   );
 };
 
@@ -33,13 +20,10 @@ const mapStateToProps = state => ({
   isAuthenticated: authSelectors.isAuthenticated(state.auth)
 });
 
-const mapDispatchToProps = dispatch => ({
-  onSubmit: (username, password) => {
-    dispatch(authOperations.login(username, password));
-  }
-});
+// const mapDispatchToProps = dispatch => ({
+//   onSubmit: (username, password) => {
+//     dispatch(authOperations.login(username, password));
+//   }
+// });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Home);
+export default connect(mapStateToProps)(HomeContainer);

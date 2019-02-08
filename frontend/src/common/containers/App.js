@@ -1,10 +1,11 @@
 import React from 'react';
-// import { Box } from 'rebass';
 import { Switch } from 'react-router-dom';
 import Routes from '../routes';
+import { GlobalStyle } from '../theme';
 
 export default () => (
   <div>
+    <GlobalStyle />
     <Switch>
       <Routes />
     </Switch>

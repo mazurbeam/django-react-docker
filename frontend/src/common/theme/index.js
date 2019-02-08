@@ -10,6 +10,11 @@ export const GlobalStyle = createGlobalStyle`
 html {
   font-family: 'Open Sans', sans-serif;
 }
+body {
+  padding: 0;
+  margin: 0;
+  
+}
 `;
 
 export default {

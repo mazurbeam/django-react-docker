@@ -1,21 +1,10 @@
 import React from 'react';
-// import { css } from 'styled-components';
-import styled from 'styled-components';
-
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { Flex, Box } from 'rebass';
 import { authOperations, authSelectors } from '../store/auth';
-
+import { Container } from '../components/base';
 import LoginForm from '../components/LoginForm';
-
-const Container = styled(Box)({
-  minHeight: '100vh'
-});
-
-Container.defaultProps = {
-  mx: 'auto'
-};
 
 const Login = props => {
   if (props.isAuthenticated) {
