@@ -1,27 +1,31 @@
-import App from '../App';
-import { Provider } from 'react-redux';
-import { ThemeProvider } from 'styled-components';
-import { BrowserRouter } from 'react-router-dom';
-
-import configureStore from '../common/store/configureStore';
 import React from 'react';
 import { hydrate } from 'react-dom';
-import theme from '../common/theme';
+import { Provider } from 'react-redux';
+import { ThemeProvider } from 'styled-components'
+import configureStore from '../common/store/configureStore';
+import App from '../common/containers/App';
+import theme from '../common/theme'
 
-const { store } = configureStore();
+const store = configureStore(window.__PRELOADED_STATE__);
 
-const Application = (
+hydrate(
   <ThemeProvider theme={theme}>
-    <Provider store={store}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </Provider>
-  </ThemeProvider>
+  <Provider store={store}>
+    <App />
+  </Provider>
+  </ThemeProvider>,
+  document.getElementById('root')
 );
 
-hydrate(Application, document.getElementById('root'));
-
 if (module.hot) {
-  module.hot.accept();
+  module.hot.accept('../common/containers/App', () => {
+    hydrate(
+      <ThemeProvider theme={theme}>
+      <Provider store={store}>
+        <App />
+      </Provider>
+      </ThemeProvider>,
+      document.getElementById('root')
+    );
+  });
 }

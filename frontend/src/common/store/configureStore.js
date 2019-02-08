@@ -1,50 +1,14 @@
-import { createStore, applyMiddleware, compose } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-
 import rootReducer from './reducers';
-import apiMiddleware from './middleware';
-// A nice helper to tell us if we're on the server
-export const isServer = !(
-  typeof window !== 'undefined' &&
-  window.document &&
-  window.document.createElement
-);
 
-export default (url = '/') => {
-  // Create a history depending on the environment
-  // const history = isServer
-  //   ? createMemoryHistory({
-  //       initialEntries: [url]
-  //     })
-  //   : createBrowserHistory();
-
-  const enhancers = [];
-
-  // Dev tools are helpful
-  if (process.env.NODE_ENV === 'development' && !isServer) {
-    const devToolsExtension = window.devToolsExtension;
-
-    if (typeof devToolsExtension === 'function') {
-      enhancers.push(devToolsExtension());
-    }
-  }
-
-  const middleware = [apiMiddleware, thunk];
-  const composedEnhancers = compose(
-    applyMiddleware(...middleware),
-    ...enhancers
+const configureStore = preloadedState => {
+  const store = createStore(
+    rootReducer,
+    preloadedState,
+    applyMiddleware(thunk)
   );
 
-  // Do we have preloaded state available? Great, save it.
-  const initialState = !isServer ? window.__PRELOADED_STATE__ : {};
-
-  // Delete it once we have it stored in a variable
-  if (!isServer) {
-    delete window.__PRELOADED_STATE__;
-  }
-
-  // Create the store
-  const store = createStore(rootReducer, initialState, composedEnhancers);
   if (module.hot) {
     // Enable Webpack hot module replacement for reducers
     module.hot.accept('./reducers', () => {
@@ -52,7 +16,8 @@ export default (url = '/') => {
       store.replaceReducer(nextRootReducer);
     });
   }
-  return {
-    store
-  };
+
+  return store;
 };
+
+export default configureStore;

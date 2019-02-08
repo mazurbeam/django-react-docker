@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'rest_auth.registration',
     'corsheaders',
     'api',
-    'invitations'
+    'invitations',
+    'widget_tweaks'
 ]
 
 MIDDLEWARE = [
@@ -59,7 +60,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, "templates"),],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -160,3 +161,5 @@ CORS_ORIGIN_WHITELIST = (
 # Django Invitations Settings
 ACCOUNT_ADAPTER = 'invitations.models.InvitationsAdapter'
 INVITATIONS_SIGNUP_REDIRECT = 'account_signup'
+INVITATIONS_INVITATION_ONLY = True
+INVITATIONS_ACCEPT_INVITE_AFTER_SIGNUP = True
