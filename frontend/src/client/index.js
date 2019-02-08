@@ -3,7 +3,7 @@ import { hydrate } from 'react-dom';
 import { Provider } from 'react-redux';
 import { ThemeProvider } from 'styled-components'
 import { BrowserRouter as Router } from 'react-router-dom'
-
+import 'isomorphic-fetch'
 import configureStore from '../common/store/configureStore';
 import App from '../common/containers/App';
 import theme from '../common/theme'

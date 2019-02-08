@@ -1,6 +1,7 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import rootReducer from './reducers';
+// import apiMiddleware from './middleware';
 
 // A nice helper to tell us if we're on the server
 export const isServer = !(
@@ -11,7 +12,7 @@ export const isServer = !(
 
 const configureStore = preloadedState => {
   const enhancers = [];
-  const middleware = [thunk];
+  const middleware = [ thunk];
   // Dev tools are helpful
   if (process.env.NODE_ENV === 'development' && !isServer) {
     const devToolsExtension = window.devToolsExtension;
