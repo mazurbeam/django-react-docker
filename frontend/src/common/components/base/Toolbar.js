@@ -2,20 +2,18 @@ import React from 'react';
 import { Flex, Box, Text } from 'rebass';
 import PropTypes from 'prop-types';
 
-const Toolbar = props => {
+const Toolbar = ({ children, bg, color, ...rest }) => {
   return (
-    <Flex m={0} color={props.color} bg={props.bg} alignItems="center">
-      <Text p={2} fontWeight="bold">
-        Home Page
-      </Text>
-      <Box mx="auto" />
+    <Flex m={0} color={color} bg={bg} alignItems="center" {...rest}>
+      {children}
     </Flex>
   );
 };
 
 Toolbar.propTypes = {
   bg: PropTypes.string,
-  color: PropTypes.string
+  color: PropTypes.string,
+  children: PropTypes.node
 };
 
 Toolbar.defaultProps = {
