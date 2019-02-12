@@ -10,10 +10,11 @@ import { match, RouterContext, StaticRouter } from 'react-router';
 import { renderToString } from 'react-dom/server';
 import serialize from 'serialize-javascript';
 // Import the StyledComponents SSR util
-import { ServerStyleSheet, ThemeProvider } from 'styled-components';
+import { ServerStyleSheet } from 'styled-components';
+import { Provider as ThemeProvider } from 'reakit';
 
 // import styled-components theme
-import theme from '../common/theme'
+import theme from '../common/theme';
 
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
 
@@ -33,22 +34,24 @@ server
 
       // Create a new Redux store instance
       const store = configureStore(preloadedState);
-      const context = {}
+      const context = {};
 
       // Create the server side style sheet
       const sheet = new ServerStyleSheet();
       // Render the component to a string
-      const markup = renderToString(sheet.collectStyles(
-        <ThemeProvider theme={theme}>
-        <Provider store={store}>
-        <StaticRouter location={req.url} context={context}>
-          <App />
-          </StaticRouter>
-        </Provider>
-        </ThemeProvider>
-      ));
+      const markup = renderToString(
+        sheet.collectStyles(
+          <ThemeProvider theme={theme}>
+            <Provider store={store}>
+              <StaticRouter location={req.url} context={context}>
+                <App />
+              </StaticRouter>
+            </Provider>
+          </ThemeProvider>
+        )
+      );
 
-      const styleTags = sheet.getStyleTags()
+      const styleTags = sheet.getStyleTags();
 
       // Grab the initial state from our Redux store
       const finalState = store.getState();
@@ -60,12 +63,16 @@ server
         <meta charSet='utf-8' />
         <title>Razzle Redux Example</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        ${assets.client.css
-          ? `<link rel="stylesheet" href="${assets.client.css}">`
-          : ''}
-          ${process.env.NODE_ENV === 'production'
-            ? `<script src="${assets.client.js}" defer></script>`
-            : `<script src="${assets.client.js}" defer crossorigin></script>`}
+        ${
+          assets.client.css
+            ? `<link rel="stylesheet" href="${assets.client.css}">`
+            : ''
+        }
+          ${
+            process.env.NODE_ENV === 'production'
+              ? `<script src="${assets.client.js}" defer></script>`
+              : `<script src="${assets.client.js}" defer crossorigin></script>`
+          }
         <!-- Render the style tags gathered from the components into the DOM -->
         ${styleTags}
     </head>
@@ -79,5 +86,4 @@ server
     });
   });
 
-  
 export default server;

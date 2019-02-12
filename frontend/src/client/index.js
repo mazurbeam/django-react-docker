@@ -1,7 +1,9 @@
 import React from 'react';
 import { hydrate } from 'react-dom';
 import { Provider } from 'react-redux';
-import { ThemeProvider } from 'styled-components';
+// import { ThemeProvider } from 'styled-components';
+// import { ThemeProvider as GardenTheme } from '@zendeskgarden/react-theming';
+import { Provider as ThemeProvider } from 'reakit';
 import { BrowserRouter as Router } from 'react-router-dom';
 import 'isomorphic-fetch';
 import configureStore from '../common/store/configureStore';

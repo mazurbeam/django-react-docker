@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import {
   FormGroup,
-  Label,
-  Input,
-  Button,
+  // Label,
+  // Input,
   Alert,
   ControlFeedback
 } from '@smooth-ui/core-sc';
-import { Heading } from 'rebass';
+import { Heading, Button, Box, Label, Input, Field } from 'reakit';
+
+// import { Box } from 'reakit';
+// import { Heading } from 'rebass';
 import { Centered } from './base';
 
 class LoginForm extends Component {
@@ -32,41 +34,56 @@ class LoginForm extends Component {
 
     return (
       <Centered>
-        <Heading textAlign="center">Login</Heading>
-        {errors.non_field_errors ? (
-          <Alert color="danger">{errors.non_field_errors}</Alert>
-        ) : (
-          ''
-        )}
-        <form onSubmit={this.onSubmit}>
-          <FormGroup>
-            <Label htmlFor="form-group-input-name">Name</Label>
-            <Input
-              control
-              id="form-group-input-name"
-              name="username"
-              onChange={this.handleInputChange}
-            />
-            {errors.username && (
-              <ControlFeedback valid={false}>{errors.username}</ControlFeedback>
-            )}
-          </FormGroup>
-          <FormGroup>
-            <Label htmlFor="form-group-input-firstname">Password</Label>
-            <Input
-              control
-              id="form-group-input-firstname"
-              name="password"
-              onChange={this.handleInputChange}
-            />
-            {errors.password && (
-              <ControlFeedback valid={false}>{errors.password}</ControlFeedback>
-            )}
-          </FormGroup>
-          <Button ml="auto" onClick={this.onSubmit}>
-            Login
-          </Button>
-        </form>
+        <Box palette="secondary">
+          <Heading palette="primary" tone={3} textAlign="center">
+            LOG IN
+          </Heading>
+          {errors.non_field_errors ? (
+            <Alert color="danger">{errors.non_field_errors}</Alert>
+          ) : (
+            ''
+          )}
+          <form onSubmit={this.onSubmit}>
+            <Field padding={8}>
+              <Input
+                id="form-group-input-name"
+                name="username"
+                onChange={this.handleInputChange}
+                width={'300px'}
+                placeholder="username"
+              />
+              {errors.username && (
+                <ControlFeedback valid={false}>
+                  {errors.username}
+                </ControlFeedback>
+              )}
+            </Field>
+            <Field padding={8}>
+              <Input
+                id="form-group-input-firstname"
+                name="password"
+                onChange={this.handleInputChange}
+                width={'300px'}
+                placeholder="password"
+              />
+              {errors.password && (
+                <ControlFeedback valid={false}>
+                  {errors.password}
+                </ControlFeedback>
+              )}
+            </Field>
+            <Button
+              palette="primary"
+              margin={8}
+              width={'300px'}
+              tone={3}
+              onClick={this.onSubmit}
+              color="white"
+            >
+              Submit
+            </Button>
+          </form>
+        </Box>
       </Centered>
     );
   }

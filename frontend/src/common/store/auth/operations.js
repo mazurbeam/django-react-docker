@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+// import {withAuth} from './selectors'
 import actions from './actions';
 
 const login = (email, password) => async dispatch => {
@@ -42,5 +42,7 @@ const refreshAccessToken = () => async dispatch => {
     console.log(error);
   }
 };
+
+const fetchAccountInfo = () => async dispatch => {};
 
 export default { login, refreshAccessToken };
