@@ -19,9 +19,43 @@ const updateAccountInfo = info => ({
   payload: info
 });
 
+const fetchAccountInfoRequest = info => ({
+  type: types.ACCOUNT_INFO_REQUEST
+});
+
+const fetchAccountInfoSuccuess = info => ({
+  type: types.ACCOUNT_INFO_SUCCESS,
+  payload: info
+});
+
+const fetchAccountInfoFailure = error => ({
+  type: types.ACCOUNT_INFO_FAILURE,
+  payload: error
+});
+
+const tokenRequest = () => ({
+  type: types.TOKEN_REQUEST
+});
+
+const tokenSuccess = data => ({
+  type: types.TOKEN_RECEIVED,
+  payload: data
+});
+
+const tokenFailure = error => ({
+  type: types.TOKEN_FAILURE,
+  payload: error
+});
+
 export default {
   loginRequest,
   loginSuccess,
   loginError,
-  updateAccountInfo
+  updateAccountInfo,
+  fetchAccountInfoRequest,
+  fetchAccountInfoSuccuess,
+  fetchAccountInfoFailure,
+  tokenRequest,
+  tokenSuccess,
+  tokenFailure
 };

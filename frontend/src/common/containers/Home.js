@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 
 import { connect } from 'react-redux';
-import { authOperations, authSelectors } from '../store/auth';
+import { authSelectors } from '../store/auth';
 
 import Home from '../pages/Home';
 import Header from './Header';

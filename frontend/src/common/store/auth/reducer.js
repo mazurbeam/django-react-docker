@@ -2,6 +2,7 @@ import jwtDecode from 'jwt-decode';
 import auth from './types';
 
 const initialState = {
+  account: undefined,
   access: undefined,
   refresh: undefined,
   errors: {}
@@ -43,6 +44,16 @@ export default (state = initialState, action) => {
         errors: action.payload.response || {
           non_field_errors: action.payload.statusText
         }
+      };
+    case auth.ACCOUNT_INFO_SUCCESS:
+      return {
+        ...state,
+        account: action.payload
+      };
+    case auth.ACCOUNT_INFO_FAILURE:
+      return {
+        ...state,
+        errors: action.payload
       };
     default:
       return state;

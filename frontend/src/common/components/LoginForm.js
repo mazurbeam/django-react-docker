@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import {
-  FormGroup,
   // Label,
   // Input,
   Alert,
   ControlFeedback
 } from '@smooth-ui/core-sc';
-import { Heading, Button, Box, Label, Input, Field } from 'reakit';
+import { Heading, Button, Box, Input, Field } from 'reakit';
 
 // import { Box } from 'reakit';
 // import { Heading } from 'rebass';
@@ -62,6 +61,7 @@ class LoginForm extends Component {
               <Input
                 id="form-group-input-firstname"
                 name="password"
+                type="password"
                 onChange={this.handleInputChange}
                 width={'300px'}
                 placeholder="password"

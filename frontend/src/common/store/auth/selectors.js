@@ -34,10 +34,14 @@ function authErrors(state) {
 }
 
 export function withAuth(headers = {}) {
-  return state => ({
+  return {
     ...headers,
-    Authorization: `Bearer ${accessToken(state)}`
-  });
+    Authorization: `Bearer ${localStorage.getItem('access')}`
+  };
+}
+
+export function withUserID() {
+  return state => userId(state.auth);
 }
 
 export default {

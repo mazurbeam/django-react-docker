@@ -1,5 +1,5 @@
 import React from 'react';
-import { Flex, Box, Text } from 'rebass';
+import { Flex } from 'rebass';
 import PropTypes from 'prop-types';
 
 const Toolbar = ({ children, bg, color, ...rest }) => {

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import { Box } from 'rebass';
-import { Container, Centered } from '../components/base';
+import { Centered } from '../components/base';
 
 class Home extends Component {
   state = {};

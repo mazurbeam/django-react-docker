@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import rootReducer from './reducers';
-// import apiMiddleware from './middleware';
+import { authMiddleware } from './middleware';
 
 // A nice helper to tell us if we're on the server
 export const isServer = !(
@@ -12,7 +12,7 @@ export const isServer = !(
 
 const configureStore = preloadedState => {
   const enhancers = [];
-  const middleware = [ thunk];
+  const middleware = [authMiddleware, thunk];
   // Dev tools are helpful
   if (process.env.NODE_ENV === 'development' && !isServer) {
     const devToolsExtension = window.devToolsExtension;
@@ -25,13 +25,8 @@ const configureStore = preloadedState => {
     applyMiddleware(...middleware),
     ...enhancers
   );
-  
-  const store = createStore(
-    rootReducer,
-    preloadedState,
-    composedEnhancers
-  );
-  
+
+  const store = createStore(rootReducer, preloadedState, composedEnhancers);
 
   if (module.hot) {
     // Enable Webpack hot module replacement for reducers
