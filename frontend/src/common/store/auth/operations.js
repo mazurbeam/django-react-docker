@@ -1,6 +1,8 @@
 import axios from 'axios';
 // import {withAuth} from './selectors'
 import actions from './actions';
+import jwtDecode from 'jwt-decode';
+
 import { withAuth, withUserID } from './selectors';
 
 const login = (email, password) => async dispatch => {
@@ -48,13 +50,15 @@ const refreshAccessToken = token => async dispatch => {
   }
 };
 
-const fetchAccountInfo = () => async dispatch => {
+const fetchAccountInfo = (id = 0) => async dispatch => {
   dispatch(actions.fetchAccountInfoRequest());
   try {
     console.log(localStorage.getItem('access'));
+    // const access = jwtDecode(localStorage.getItem('access'));
+    // console.log(access.user_id);
     const res = await axios({
       method: 'get',
-      url: `http://api.localhost/v1/users/`,
+      url: `http://api.localhost/v1/users/${id}`,
       headers: withAuth({
         'Content-Type': 'application/json'
       })

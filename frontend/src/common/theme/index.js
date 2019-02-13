@@ -1,6 +1,7 @@
 import { createGlobalStyle } from 'styled-components';
 import { theme } from '@smooth-ui/core-sc';
 import { default as reakitTheme } from 'reakit-theme-default';
+import { prop, palette as p, ifProp } from 'styled-tools';
 
 export const GlobalStyle = createGlobalStyle`
 @font-face: 
@@ -34,7 +35,9 @@ export default {
     /* https://coolors.co/26547c-a3d5ff-476c9b-8b95c9-637081*/
     primary: ['#26547C', '#A3D5FF', '#476C9B', '#8B95C9', '#637081'],
     secondary: ['#02394a', '#043e77', '#ff7fc1', '#21cad3', '#b363f9'],
-    whites: ['#ffffff', '#e8e8e8', '#d1d1d1', '#bababa', '#bababa']
+    whites: ['#ffffff', '#e8e8e8', '#d1d1d1', '#bababa', '#bababa'],
+    greys: ['#022b3a', '#495867', '#326273', '#c5c5c5', '#56666b'],
+    greysText: [p('white'), p('white'), p('white'), p('black'), p('white')]
   },
   breakpoints: ['40em', '52em', '64em'],
   fontSizes: [12, 14, 16, 20, 24, 32, 48, 64],

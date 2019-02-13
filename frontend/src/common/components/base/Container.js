@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Box } from 'rebass';
 
 const Container = styled(Box)({
-  minHeight: '100vh'
+  maxWidth: '1024px'
 });
 
 Container.defaultProps = {

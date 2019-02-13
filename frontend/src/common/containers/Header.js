@@ -14,8 +14,10 @@ class Header extends Component {
   state = {};
 
   componentDidMount() {
-    const { fetchAccount } = this.props;
-    fetchAccount();
+    const { fetchAccount, userID } = this.props;
+    if (userID != undefined) {
+      fetchAccount(userID.user_id);
+    }
   }
 
   render() {
@@ -41,15 +43,16 @@ class Header extends Component {
 
 const mapStateToProps = state => ({
   errors: authSelectors.authErrors(state.auth),
-  isAuthenticated: authSelectors.isAuthenticated(state.auth)
+  isAuthenticated: authSelectors.isAuthenticated(state.auth),
+  userID: authSelectors.userId(state.auth)
 });
 
 const mapDispatchToProps = dispatch => ({
   onSubmit: (username, password) => {
     dispatch(authOperations.login(username, password));
   },
-  fetchAccount: () => {
-    dispatch(authOperations.fetchAccountInfo());
+  fetchAccount: id => {
+    dispatch(authOperations.fetchAccountInfo(id));
   }
 });
 
