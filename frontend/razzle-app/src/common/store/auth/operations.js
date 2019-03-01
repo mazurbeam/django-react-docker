@@ -10,7 +10,7 @@ const login = (email, password) => async dispatch => {
   try {
     const res = await axios({
       method: 'post',
-      url: `http://api.localhost/auth/token/`,
+      url: `${process.env.RAZZLE_API_URL}/auth/token/`,
       data: JSON.stringify({
         username: email,
         password
@@ -18,7 +18,6 @@ const login = (email, password) => async dispatch => {
       headers: {
         'Content-Type': 'application/json'
       }
-      // withCredentials: true
     });
     console.log(res);
     localStorage.setItem('access', res.data.access);
@@ -33,7 +32,7 @@ const refreshAccessToken = token => async dispatch => {
   try {
     const res = await axios({
       method: 'get',
-      url: `http://${process.env.RAZZLE_API_URL}/auth/token/refresh/`,
+      url: `${process.env.RAZZLE_API_URL}/auth/token/refresh/`,
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json'

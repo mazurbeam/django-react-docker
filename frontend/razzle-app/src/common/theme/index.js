@@ -22,6 +22,7 @@ body {
 const colors = {
   blue: '#07c',
   bg: '#f6f5f6',
+  blackBg: "#000000",
   bgLight: '#FBFBFB',
   border: '#EBEBEB',
   primary: '#D1d1d1'
@@ -37,6 +38,7 @@ export default {
     secondary: ['#02394a', '#043e77', '#ff7fc1', '#21cad3', '#b363f9'],
     whites: ['#ffffff', '#e8e8e8', '#d1d1d1', '#bababa', '#bababa'],
     greys: ['#022b3a', '#495867', '#326273', '#c5c5c5', '#56666b'],
+    blacks: ['#0A0A0A', '#000000'],
     greysText: [p('white'), p('white'), p('white'), p('black'), p('white')]
   },
   breakpoints: ['40em', '52em', '64em'],

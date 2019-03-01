@@ -12,9 +12,17 @@ import serialize from 'serialize-javascript';
 // Import the StyledComponents SSR util
 import { ServerStyleSheet } from 'styled-components';
 import { Provider as ThemeProvider } from 'reakit';
-
-// import styled-components theme
+ // import styled-components theme
 import theme from '../common/theme';
+
+import isDocker from 'is-docker'
+import env from 'get-env'
+
+const path = require('path');
+
+
+const staticPath = env === 'dev' && !isDocker() ? process.env.RAZZLE_PUBLIC_DIR : path.join(__dirname, '../build/public');
+
 
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
 
@@ -22,7 +30,7 @@ const server = express();
 
 server
   .disable('x-powered-by')
-  .use(express.static(process.env.RAZZLE_PUBLIC_DIR))
+  .use(express.static(staticPath))
   .get('/*', (req, res) => {
     fetchCounter(apiResult => {
       // Read the counter from the request, if provided
@@ -35,7 +43,9 @@ server
       // Create a new Redux store instance
       const store = configureStore(preloadedState);
       const context = {};
-
+      // let urlParts = req.url.split('/')
+      // let urlClean = urlParts.map(part => !part.includes('?fbclid') );
+      // const url = urlClean.join('')
       // Create the server side style sheet
       const sheet = new ServerStyleSheet();
       // Render the component to a string
@@ -61,8 +71,9 @@ server
     <head>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta charSet='utf-8' />
-        <title>Razzle Redux Example</title>
+        <title>SGC Events</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>html{background-color: #000000}</style>
         ${
           assets.client.css
             ? `<link rel="stylesheet" href="${assets.client.css}">`

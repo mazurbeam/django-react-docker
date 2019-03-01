@@ -5,6 +5,8 @@ import { Flex } from 'rebass';
 import { Box } from 'reakit';
 import { authOperations, authSelectors } from '../store/auth';
 import { Container, Viewport } from '../components/base';
+import Header from './Header';
+
 import LoginForm from '../components/LoginForm';
 
 const Login = props => {
@@ -12,13 +14,13 @@ const Login = props => {
     return <Redirect to="/home" />;
   } else {
     return (
-      <Viewport palette="primary" height="100%" opaque tone={0}>
         <Flex bg="" flexDirection="column" flexWrap="wrap">
+          <Header/>
           <Container p={6}>
+
             <LoginForm {...props} />
           </Container>
         </Flex>
-      </Viewport>
     );
   }
 };

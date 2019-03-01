@@ -1,17 +1,31 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import styled from 'styled-components'
+
+import { Menu } from 'styled-icons/icomoon/Menu';
+import {Link} from 'react-router-dom'
+import { Button } from "reakit";
+import { Flex, Box, Text, Image } from 'rebass';
+
 // redux module
 import { authOperations, authSelectors } from '../store/auth';
 
 // styled-components
-import { Box, Text } from 'rebass';
-import { Avatar } from 'reakit';
-import { Menu } from 'styled-icons/icomoon/Menu';
+
 import { Toolbar } from '../components/base';
+import {NavLink} from '../components/base'
+
+import bannerImg from '../static/imgs/banner.jpg'
+
 
 class Header extends Component {
-  state = {};
+	constructor(props) {
+		super(props);
+		this.state = {
+			hidden: true,
+		};
+	}
 
   componentDidMount() {
     const { fetchAccount, userID } = this.props;
@@ -25,17 +39,29 @@ class Header extends Component {
     const { bg } = this.props;
     return (
       <Toolbar bg={bg} p={2}>
+
+
+        <Box mx='auto'>
         <Text p={2} fontWeight="bold">
-          <Menu size="40" />
         </Text>
-        <Box mx="auto">
-          <Text>Home</Text>
         </Box>
-        <Avatar
-          src="https://placekitten.com/150/200"
-          alt="Kitten"
-          fontSize={40}
-        />
+        <Box >
+          <Link to='/'><Image src={bannerImg}/></Link>
+          <Box  width={1} display='block'>
+	          <Flex  flexWrap='wrap' flexDirection='row' alignItem='center' justifyContent='center'>
+            <NavLink to='/artists'>Artist Roster</NavLink>
+	          <NavLink to='/'>Music</NavLink>
+	          <NavLink to='/'>News</NavLink>
+	          <NavLink to='/'>Events</NavLink>
+		          <NavLink to='/login'>Signup</NavLink>
+		          <NavLink to='/login'>Login</NavLink>
+
+            </Flex>
+
+          </Box>
+        </Box>
+        <Box mx='auto'>
+        </Box>
       </Toolbar>
     );
   }
