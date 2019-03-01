@@ -1,7 +1,11 @@
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group
+# from django.contrib.auth.decorators import login_required
 from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated
 from .serializers import UserSerializer, GroupSerializer, EventSerializer
-from .models import Event
+from .models import Event, User
+
+# class PermissionViewSet
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -10,6 +14,7 @@ class UserViewSet(viewsets.ModelViewSet):
     """
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
 
 
 class GroupViewSet(viewsets.ModelViewSet):
@@ -18,6 +23,7 @@ class GroupViewSet(viewsets.ModelViewSet):
     """
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
+    permission_classes = [IsAuthenticated]
 
 
 class EventViewSet(viewsets.ModelViewSet):
@@ -26,3 +32,4 @@ class EventViewSet(viewsets.ModelViewSet):
     """
     queryset = Event.objects.all()
     serializer_class = EventSerializer
+    permission_classes = [IsAuthenticated]

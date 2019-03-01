@@ -7,25 +7,33 @@ services:
         ports:
             - "80:80"     # The HTTP port
             - "443:443"     # The HTTPS port
-            # - "8000:8000" # The Web UI (enabled by --api)
+            - "8080:8080" # The Web UI (enabled by --api)
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock
-            # - ./traefik/${TRAEFIK_CONFIG:-traefik_dev.toml}:/traefik.toml
-            # - ./traefik/acme.json:/acme.json
+            - ./traefik/traefik.toml:/traefik.toml
+            - ./traefik/acme.json:/acme.json
         networks:
             - master
+        labels:
+            - "traefik.frontend.rule=Host:monitor.${BASE_URL:-localhost}" # add another rule with ";Host:host"
+            - "traefik.enable=true"
+            - "traefik.frontend.auth.basic=nimda:$$apr1$$/2Ca8pGP$$fOtX7Sq6EwS8KxPAOYGO1/"
+            - "traefik.port=8080"
   db:
     image: postgres
     volumes:
-      - postgres_data:/var/lib/postgresql/data/
+      - postgres_data:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=booking_db
     networks:
       - master
+    labels:
+      - "traefik.enable=false"
   api:
     build: ./api
-    command: bash -c "python manage.py makemigrations && python manage.py migrate  && python manage.py runserver 0.0.0.0:8000 "
+    command: bash -c "python manage.py makemigrations api && python manage.py migrate  && python manage.py makemigrations && python manage.py migrate  && python manage.py runserver 0.0.0.0:8000 "
     volumes:
       - ./api:/app/api
     ports:
@@ -34,6 +42,7 @@ services:
       - db
     networks:
       - master
+
     labels:
       - "traefik.backend=api"
       - "traefik.docker.network=${network_name:-masternetwork}"
@@ -47,16 +56,15 @@ services:
             args:
                 - ENV=${ENV:-development}
                 - BASE_URL=${BASE_URL:-localhost}
-    command: ["npm", "start"]
-    volumes:
-      - ./frontend:/app/frontend
-      - node-modules:/app/frontend/node_modules
+                - API_BASE_URL=${API_URL:-api.localhost}
+                - HTTP=${HTTP:-http}
+    command: ["npm","run", "start:prod"]
     ports:
       - "3000:3000"
       - "3001:3001"
     environment:
             # Needed for haproxy in swarm
-            - SERVICE_PORTS=80
+            - SERVICE_PORTS=3000
     networks:
       - master
     labels:
@@ -64,7 +72,27 @@ services:
       - "traefik.docker.network=${network_name:-masternetwork}"
       - "traefik.frontend.rule=Host:${BASE_URL:-localhost}" # add another rule with ";Host:host"
       - "traefik.enable=true"
-      - "traefik.port=80"
+      - "traefik.port=3000"
+
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-mazurbeam@gmail.com}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+    volumes:
+       - pgadmin:/root/.pgadmin
+    ports:
+      - "${PGADMIN_PORT:-5050}:80"
+    labels:
+      - "traefik.backend=api"
+      - "traefik.docker.network=${network_name:-masternetwork}"
+      - "traefik.frontend.rule=Host:pgadmin.${BASE_URL:-localhost}" # add another rule with ";Host:host"
+      - "traefik.enable=true"
+      - "traefik.port=5050"
+    networks:
+      - master
+    restart: unless-stopped
 
 networks:
   # Network mostly needed for swarm
@@ -76,4 +104,6 @@ networks:
 volumes:
   node-modules:
   postgres_data:
+  pgadmin:
+
 

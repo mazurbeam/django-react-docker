@@ -32,3 +32,4 @@ wrapt==1.11.1
 djangorestframework_simplejwt
 django-cors-headers
 django-invitations
+django-widget-tweaks
