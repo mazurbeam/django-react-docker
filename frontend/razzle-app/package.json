@@ -12,7 +12,7 @@
     "@smooth-ui/core-sc": "^9.0.1",
     "@zendeskgarden/react-textfields": "^3.8.2",
     "@zendeskgarden/react-theming": "^3.2.1",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "express": "^4.15.2",
     "get-env": "^0.5.10",
     "is-docker": "^1.1.0",
