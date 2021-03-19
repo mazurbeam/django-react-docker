@@ -8,7 +8,7 @@ Django==2.1.5
 django-allauth==0.38.0
 django-filter==2.1.0
 django-rest-auth==0.9.3
-djangorestframework==3.9.1
+djangorestframework==3.11.2
 idna==2.8
 isort==4.3.4
 itypes==1.1.0
