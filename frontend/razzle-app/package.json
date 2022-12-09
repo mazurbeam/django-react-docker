@@ -13,7 +13,7 @@
     "@zendeskgarden/react-textfields": "^3.8.2",
     "@zendeskgarden/react-theming": "^3.2.1",
     "axios": "^0.18.0",
-    "express": "^4.15.2",
+    "express": "^4.17.3",
     "get-env": "^0.5.10",
     "is-docker": "^1.1.0",
     "isomorphic-fetch": "^2.2.1",
